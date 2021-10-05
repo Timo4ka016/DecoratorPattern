@@ -1,0 +1,90 @@
+package com.company;
+
+public interface Boss {
+    public String WeakReception();
+}
+
+________________________________________________________________________________________
+
+package com.company;
+
+public class BossDecorator implements Boss{
+    Boss boss;
+
+    public BossDecorator(Boss boss) {
+        this.boss = boss;
+    }
+
+    @Override
+    public String WeakReception() {
+        return boss.WeakReception();
+    }
+}
+
+________________________________________________________________________________________
+
+package com.company;
+
+public class lvl_1 implements Boss{
+
+    @Override
+    public String WeakReception() {
+        return "[Слабый удар] ";
+    }
+}
+
+________________________________________________________________________________________
+
+package com.company;
+
+public class lvl_2 extends BossDecorator{
+
+    public lvl_2(Boss boss) {
+        super(boss);
+    }
+
+    public String UsualReception(){
+        return " [Обычный удар]";
+    }
+
+    @Override
+    public String WeakReception() {
+        return super.WeakReception() + UsualReception();
+    }
+}
+
+________________________________________________________________________________________
+
+package com.company;
+
+public class lvl_3 extends BossDecorator{
+    public lvl_3(Boss boss) {
+        super(boss);
+    }
+
+    public String StrongReception(){
+        return " [Сильный удар]" ;
+    }
+
+    @Override
+    public String WeakReception() {
+        return super.WeakReception() + StrongReception();
+    }
+}
+
+________________________________________________________________________________________
+
+package com.company;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Boss Dog = new lvl_3(new lvl_2(new lvl_1())) ;
+        Boss Cat = new lvl_2(new lvl_1()) ;
+
+        System.out.println(Dog.WeakReception() + "\n----------------------------------------------");
+        System.out.println(Cat.WeakReception());
+
+    }
+}
